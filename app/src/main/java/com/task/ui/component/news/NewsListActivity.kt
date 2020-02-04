@@ -73,7 +73,7 @@ class NewsListActivity : BaseActivity() {
 
     private fun navigateToDetailsScreen(navigateEvent: Event<NewsItem>) {
         navigateEvent.getContentIfNotHandled()?.let {
-            startActivity(intentFor<DetailsActivity>(Constants.NEWS_ITEM_KEY to it))
+            startActivity(intentFor<DetailsActivity>(Constants.USER_KEY to it))
         }
     }
 

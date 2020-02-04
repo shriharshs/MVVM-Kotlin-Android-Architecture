@@ -29,7 +29,7 @@ class DetailsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.newsItem.value = intent.getParcelableExtra(Constants.NEWS_ITEM_KEY)
+        viewModel.newsItem.value = intent.getParcelableExtra(Constants.USER_KEY)
     }
 
     override fun observeViewModel() {

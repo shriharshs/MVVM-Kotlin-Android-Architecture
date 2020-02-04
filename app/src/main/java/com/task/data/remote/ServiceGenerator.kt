@@ -1,12 +1,12 @@
 package com.task.data.remote
 
-import com.google.gson.Gson
 import com.task.BuildConfig
+import com.task.utils.Constants
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,7 +17,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ServiceGenerator @Inject
-constructor(private val gson: Gson) {
+constructor() {
 
     //Network constants
     private val TIMEOUT_CONNECT = 30   //In seconds
@@ -55,11 +55,11 @@ constructor(private val gson: Gson) {
         okHttpBuilder.readTimeout(TIMEOUT_READ.toLong(), TimeUnit.SECONDS)
     }
 
-    fun <S> createService(serviceClass: Class<S>, baseUrl: String): S {
+    fun <S> createService(serviceClass: Class<S>): S {
         val client = okHttpBuilder.build()
         retrofit = Retrofit.Builder()
-                .baseUrl(baseUrl).client(client)
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .baseUrl(Constants.BASE_URL).client(client)
+                .addConverterFactory(MoshiConverterFactory.create())
                 .build()
         return retrofit!!.create(serviceClass)
     }
