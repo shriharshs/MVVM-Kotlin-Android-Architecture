@@ -5,7 +5,7 @@ import android.os.Handler
 import com.task.R
 import com.task.ui.ViewModelFactory
 import com.task.ui.base.BaseActivity
-import com.task.ui.component.news.NewsListActivity
+import com.task.ui.component.users.UsersListActivity
 import com.task.utils.Constants
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
@@ -39,7 +39,7 @@ class SplashActivity : BaseActivity(){
 
     private fun navigateToMainScreen() {
         Handler().postDelayed({
-            startActivity<NewsListActivity>()
+            startActivity<UsersListActivity>()
             finish()
         }, Constants.SPLASH_DELAY.toLong())
     }

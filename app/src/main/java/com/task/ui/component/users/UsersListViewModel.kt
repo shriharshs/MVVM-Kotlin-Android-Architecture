@@ -1,14 +1,13 @@
-package com.task.ui.component.news
+package com.task.ui.component.users
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.task.data.Resource
 import com.task.data.error.mapper.ErrorMapper
-import com.task.data.remote.dto.NewsItem
-import com.task.data.remote.dto.NewsModel
+import com.task.data.remote.dto.User
 import com.task.ui.base.BaseViewModel
-import com.task.usecase.NewsUseCase
+import com.task.usecase.UsersUseCase
 import com.task.usecase.errors.ErrorManager
 import com.task.utils.Event
 import javax.inject.Inject
@@ -17,8 +16,8 @@ import javax.inject.Inject
  * Created by AhmedEltaher on 5/12/2016
  */
 
-class NewsListViewModel @Inject
-constructor(private val newsDataUseCase: NewsUseCase) : BaseViewModel() {
+class UsersListViewModel @Inject
+constructor(private val usersDataUseCase: UsersUseCase) : BaseViewModel() {
 
     override val errorManager: ErrorManager
         get() = ErrorManager(ErrorMapper())
@@ -26,19 +25,13 @@ constructor(private val newsDataUseCase: NewsUseCase) : BaseViewModel() {
     /**
      * Data --> LiveData, Exposed as LiveData, Locally in viewModel as MutableLiveData
      */
-    var newsLiveData: MutableLiveData<Resource<NewsModel>> = newsDataUseCase.newsLiveData
-
-    private val newsSearchFoundPrivate: MutableLiveData<NewsItem> = MutableLiveData()
-    val newsSearchFound: LiveData<NewsItem> get() = newsSearchFoundPrivate
-
-    private val noSearchFoundPrivate: MutableLiveData<Unit> = MutableLiveData()
-    val noSearchFound: LiveData<Unit> get() = noSearchFoundPrivate
+    var usersLiveData: MutableLiveData<Resource<List<User>>> = usersDataUseCase.usersLiveData
 
     /**
      * UI actions as event, user action is single one time event, Shouldn't be multiple time consumption
      */
-    private val openNewsDetailsPrivate = MutableLiveData<Event<NewsItem>>()
-    val openNewsDetails: LiveData<Event<NewsItem>> get() = openNewsDetailsPrivate
+    private val openUserDetailsPrivate = MutableLiveData<Event<User>>()
+    val openNewsDetails: LiveData<Event<User>> get() = openUserDetailsPrivate
 
     /**
      * Error handling as UI
@@ -51,11 +44,11 @@ constructor(private val newsDataUseCase: NewsUseCase) : BaseViewModel() {
 
 
     fun getNews() {
-        newsDataUseCase.getNews()
+        usersDataUseCase.getUsers()
     }
 
-    fun openNewsDetails(newsItem: NewsItem) {
-        openNewsDetailsPrivate.value = Event(newsItem)
+    fun openUserDetails(user: User) {
+        openUserDetailsPrivate.value = Event(user)
     }
 
     fun showSnackbarMessage(@StringRes message: Int) {
@@ -68,15 +61,15 @@ constructor(private val newsDataUseCase: NewsUseCase) : BaseViewModel() {
     }
 
     fun onSearchClick(newsTitle: String) {
-        if (newsTitle.isNotEmpty()) {
-            val newsItem = newsDataUseCase.searchByTitle(newsTitle)
-            if (newsItem != null) {
-                newsSearchFoundPrivate.value = newsItem
-            } else {
-                noSearchFoundPrivate.postValue(Unit)
-            }
-        } else {
-            noSearchFoundPrivate.postValue(Unit)
-        }
+//        if (newsTitle.isNotEmpty()) {
+//            val newsItem = usersDataUseCase.searchByTitle(newsTitle)
+//            if (newsItem != null) {
+//                newsSearchFoundPrivate.value = newsItem
+//            } else {
+//                noSearchFoundPrivate.postValue(Unit)
+//            }
+//        } else {
+//            noSearchFoundPrivate.postValue(Unit)
+//        }
     }
 }

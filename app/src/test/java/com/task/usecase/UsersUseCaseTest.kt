@@ -4,7 +4,6 @@ package com.task.usecase
 import com.task.data.DataRepository
 import com.task.data.Resource
 import com.task.data.error.Error
-import com.task.data.remote.dto.NewsModel
 import com.util.InstantExecutorExtension
 import com.util.MainCoroutineRule
 import com.util.TestModelsGenerator
@@ -23,11 +22,11 @@ import org.junit.jupiter.api.extension.ExtendWith
  */
 @ExperimentalCoroutinesApi
 @ExtendWith(InstantExecutorExtension::class)
-class NewsUseCaseTest {
+class UsersUseCaseTest {
 
     private var dataRepository: DataRepository? = null
 
-    private lateinit var newsUseCase: NewsUseCase
+    private lateinit var usersUseCase: UsersUseCase
     private val testModelsGenerator: TestModelsGenerator = TestModelsGenerator()
     private lateinit var newsModel: NewsModel
 
@@ -39,7 +38,7 @@ class NewsUseCaseTest {
     @BeforeEach
     fun setUp() {
         dataRepository = DataRepository(mockk(), mockk())
-        newsUseCase = NewsUseCase(dataRepository!!, mainCoroutineRule.coroutineContext)
+        usersUseCase = UsersUseCase(dataRepository!!, mainCoroutineRule.coroutineContext)
     }
 
     @Test
@@ -47,24 +46,24 @@ class NewsUseCaseTest {
         //mock
         newsModel = testModelsGenerator.generateNewsModel()
         val serviceResponse = Resource.Success(newsModel)
-        coEvery { dataRepository?.requestNews() } returns serviceResponse
+        coEvery { dataRepository?.requestUsers() } returns serviceResponse
         //call
-        newsUseCase.getNews()
-        newsUseCase.newsLiveData.observeForever { }
+        usersUseCase.getUsers()
+        usersUseCase.usersLiveData.observeForever { }
         //assert test
-        assert(serviceResponse == newsUseCase.newsLiveData.value)
+        assert(serviceResponse == usersUseCase.usersLiveData.value)
     }
 
     @Test
     fun testGetNewsFail() {
         //mock
         val serviceResponse = Resource.DataError<NewsModel>(Error.DEFAULT_ERROR)
-        coEvery { dataRepository?.requestNews() } returns serviceResponse
+        coEvery { dataRepository?.requestUsers() } returns serviceResponse
         //call
-        newsUseCase.getNews()
-        newsUseCase.newsLiveData.observeForever {  }
+        usersUseCase.getUsers()
+        usersUseCase.usersLiveData.observeForever {  }
         //assert test
-        assert(Error.DEFAULT_ERROR == newsUseCase.newsLiveData.value?.errorCode)
+        assert(Error.DEFAULT_ERROR == usersUseCase.usersLiveData.value?.errorCode)
     }
 
     @Test
@@ -72,10 +71,10 @@ class NewsUseCaseTest {
         newsModel = testModelsGenerator.generateNewsModel()
         val title = newsModel.newsItems.last().title
         val serviceResponse = Resource.Success(newsModel)
-        coEvery { dataRepository?.requestNews() } returns serviceResponse
+        coEvery { dataRepository?.requestUsers() } returns serviceResponse
         //call
-        newsUseCase.getNews()
-        val newsItem = newsUseCase.searchByTitle(title)
+        usersUseCase.getUsers()
+        val newsItem = usersUseCase.searchByTitle(title)
         assertNotNull(newsItem)
         assert(newsItem?.title == newsItem?.title)
     }
@@ -85,9 +84,9 @@ class NewsUseCaseTest {
         val stup = "&%$##"
         newsModel = testModelsGenerator.generateNewsModel()
         val serviceResponse = Resource.Success(newsModel)
-        coEvery { dataRepository?.requestNews() } returns serviceResponse
+        coEvery { dataRepository?.requestUsers() } returns serviceResponse
         //call
-        val newsItem = newsUseCase.searchByTitle(stup)
+        val newsItem = usersUseCase.searchByTitle(stup)
         assert(newsItem == null)
     }
 

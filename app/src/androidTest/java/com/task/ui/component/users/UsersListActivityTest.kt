@@ -1,4 +1,4 @@
-package com.task.ui.component.news
+package com.task.ui.component.users
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
@@ -22,10 +22,10 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class NewsListActivityTest {
+class UsersListActivityTest {
     private val testSearchString = "the"
     @get:Rule
-    var mActivityTestRule = ActivityTestRule(NewsListActivity::class.java)
+    var mActivityTestRule = ActivityTestRule(UsersListActivity::class.java)
     private var mIdlingResource: IdlingResource? = null
     @Before
     fun setup() {

@@ -1,56 +1,55 @@
 package com.task.data.remote.dto
+import com.google.gson.annotations.SerializedName
 
-
-import com.squareup.moshi.Json
 
 data class UserDetails(
-    @Json(name = "avatar_url")
+    @SerializedName("avatar_url")
     var avatarUrl: String = "",
     var bio: Any = Any(),
     var blog: String = "",
     var company: Any = Any(),
-    @Json(name = "created_at")
+    @SerializedName("created_at")
     var createdAt: String = "",
     var email: Any = Any(),
-    @Json(name = "events_url")
+    @SerializedName("events_url")
     var eventsUrl: String = "",
     var followers: Int = 0,
-    @Json(name = "followers_url")
+    @SerializedName("followers_url")
     var followersUrl: String = "",
     var following: Int = 0,
-    @Json(name = "following_url")
+    @SerializedName("following_url")
     var followingUrl: String = "",
-    @Json(name = "gists_url")
+    @SerializedName("gists_url")
     var gistsUrl: String = "",
-    @Json(name = "gravatar_id")
+    @SerializedName("gravatar_id")
     var gravatarId: String = "",
     var hireable: Any = Any(),
-    @Json(name = "html_url")
+    @SerializedName("html_url")
     var htmlUrl: String = "",
     var id: Int = 0,
     var location: String = "",
     var login: String = "",
     var name: String = "",
-    @Json(name = "node_id")
+    @SerializedName("node_id")
     var nodeId: String = "",
-    @Json(name = "organizations_url")
+    @SerializedName("organizations_url")
     var organizationsUrl: String = "",
-    @Json(name = "public_gists")
+    @SerializedName("public_gists")
     var publicGists: Int = 0,
-    @Json(name = "public_repos")
+    @SerializedName("public_repos")
     var publicRepos: Int = 0,
-    @Json(name = "received_events_url")
+    @SerializedName("received_events_url")
     var receivedEventsUrl: String = "",
-    @Json(name = "repos_url")
+    @SerializedName("repos_url")
     var reposUrl: String = "",
-    @Json(name = "site_admin")
+    @SerializedName("site_admin")
     var siteAdmin: Boolean = false,
-    @Json(name = "starred_url")
+    @SerializedName("starred_url")
     var starredUrl: String = "",
-    @Json(name = "subscriptions_url")
+    @SerializedName("subscriptions_url")
     var subscriptionsUrl: String = "",
     var type: String = "",
-    @Json(name = "updated_at")
+    @SerializedName("updated_at")
     var updatedAt: String = "",
     var url: String = ""
 )

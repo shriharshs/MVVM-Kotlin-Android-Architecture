@@ -6,7 +6,6 @@ import com.google.gson.Gson
 import com.task.TestDataReprository.Instance.initData
 import com.task.data.DataSource
 import com.task.data.Resource
-import com.task.data.remote.dto.NewsModel
 import java.io.InputStream
 import javax.inject.Inject
 
@@ -17,7 +16,7 @@ import javax.inject.Inject
 
 class TestDataReprository @Inject constructor() : DataSource {
 
-    override suspend fun requestNews(): Resource<NewsModel> {
+    override suspend fun requestUsers(): Resource<NewsModel> {
         return Resource.Success(initData())
     }
 

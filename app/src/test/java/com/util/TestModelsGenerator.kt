@@ -1,8 +1,7 @@
 package com.util
 
 import com.google.gson.Gson
-import com.task.data.remote.dto.NewsItem
-import com.task.data.remote.dto.NewsModel
+import com.task.data.remote.dto.User
 import java.io.File
 import java.util.*
 
@@ -28,7 +27,7 @@ class TestModelsGenerator {
         return newsModel
     }
 
-    fun generateNewsItemModel(): NewsItem {
+    fun generateNewsItemModel(): User {
         return newsModel.newsItems[0]
     }
 

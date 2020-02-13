@@ -3,7 +3,7 @@ package com.task.ui.component.details
 import android.os.Bundle
 import com.squareup.picasso.Picasso
 import com.task.R
-import com.task.data.remote.dto.NewsItem
+import com.task.data.remote.dto.User
 import com.task.ui.ViewModelFactory
 import com.task.ui.base.BaseActivity
 import com.task.utils.Constants
@@ -29,7 +29,7 @@ class DetailsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.newsItem.value = intent.getParcelableExtra(Constants.USER_KEY)
+//        viewModel.newsItem.value = intent.getParcelableExtra(Constants.USER_KEY)
     }
 
     override fun observeViewModel() {
@@ -40,12 +40,12 @@ class DetailsActivity : BaseActivity() {
         viewModel = viewModelFactory.create(viewModel::class.java)
     }
 
-    private fun initializeView(newsItem: NewsItem) {
-        tv_title?.text = newsItem.title
-        tv_description?.text = newsItem.abstractInfo
-        if (!newsItem.multimedia.isNullOrEmpty()) {
-            Picasso.get().load(newsItem.multimedia.last().url).placeholder(R.drawable.news)
-                    .into(iv_news_main_Image)
-        }
+    private fun initializeView(newsItem: User) {
+//        tv_title?.text = newsItem.title
+//        tv_description?.text = newsItem.abstractInfo
+//        if (!newsItem.multimedia.isNullOrEmpty()) {
+//            Picasso.get().load(newsItem.multimedia.last().url).placeholder(R.drawable.news)
+//                    .into(iv_news_main_Image)
+//        }
     }
 }
