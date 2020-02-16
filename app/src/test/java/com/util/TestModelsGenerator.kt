@@ -1,38 +1,40 @@
 package com.util
 
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.task.data.remote.dto.User
+import com.task.data.remote.dto.UserDetails
 import java.io.File
-import java.util.*
+import java.lang.reflect.Type
 
 /**
  * Created by ahmedEltaher on 3/8/17.
  */
 
 class TestModelsGenerator {
-    private var newsModel: NewsModel
+    private var usersModel: List<User>
+    private var userDetailsModel: UserDetails
+
 
     init {
         val gson = Gson()
-        val jsonString = getJson("NewsApiResponse.json")
-        newsModel = gson.fromJson(jsonString, NewsModel::class.java)
+        val usersApiResponse = getJson("UsersApiResponse.json")
+        val userDetailsApiResponse = getJson("UsersDetailsApiResponse.json")
+        val listType: Type = object : TypeToken<List<User>>() {}.type
+        usersModel = gson.fromJson(usersApiResponse, listType)
+        userDetailsModel = gson.fromJson(userDetailsApiResponse, UserDetails::class.java)
     }
 
-    fun generateNewsModel(): NewsModel {
-        return newsModel
+    fun generateUsersModel(): List<User> {
+        return usersModel
     }
 
-    fun generateNewsModelWithEmptyList(): NewsModel {
-        newsModel.newsItems = ArrayList()
-        return newsModel
+    fun generateEmptyUsersModel(): List<User> {
+        return listOf()
     }
 
-    fun generateNewsItemModel(): User {
-        return newsModel.newsItems[0]
-    }
-
-    fun getStupSearchTitle(): String {
-        return newsModel.newsItems[0].title
+    fun generateUserDetailsModel(): UserDetails {
+        return userDetailsModel
     }
 
 

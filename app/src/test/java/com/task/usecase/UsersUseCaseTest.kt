@@ -4,7 +4,9 @@ package com.task.usecase
 import com.task.data.DataRepository
 import com.task.data.Resource
 import com.task.data.error.Error
-import com.task.usecase.userDetaiUseCase.UsersUseCase
+import com.task.data.remote.dto.User
+import com.task.data.remote.dto.UserDetails
+import com.task.usecase.usersUseCase.UsersUseCase
 import com.util.InstantExecutorExtension
 import com.util.MainCoroutineRule
 import com.util.TestModelsGenerator
@@ -13,7 +15,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -29,7 +30,8 @@ class UsersUseCaseTest {
 
     private lateinit var usersUseCase: UsersUseCase
     private val testModelsGenerator: TestModelsGenerator = TestModelsGenerator()
-    private lateinit var newsModel: NewsModel
+    private lateinit var users: List<User>
+    private lateinit var userDetails: UserDetails
 
     // Set the main coroutines dispatcher for unit testing.
     @ExperimentalCoroutinesApi
@@ -43,52 +45,55 @@ class UsersUseCaseTest {
     }
 
     @Test
-    fun testGetNewsSuccessful() {
+    fun testGetUsersSuccessful() {
         //mock
-        newsModel = testModelsGenerator.generateNewsModel()
-        val serviceResponse = Resource.Success(newsModel)
+        users = testModelsGenerator.generateUsersModel()
+        val serviceResponse = Resource.Success(users)
         coEvery { dataRepository?.requestUsers() } returns serviceResponse
         //call
-        usersUseCase.getUserDetails()
+        usersUseCase.getUsers()
+        usersUseCase.usersLiveData.observeForever { }
+        //assert test
+        assert(serviceResponse == usersUseCase.usersLiveData.value)
+    }
+
+    @Test
+    fun testGetUsersFail() {
+        //mock
+        val serviceResponse = Resource.DataError<List<User>>(Error.DEFAULT_ERROR)
+        coEvery { dataRepository?.requestUsers() } returns serviceResponse
+        //call
+        usersUseCase.getUsers()
+        usersUseCase.usersLiveData.observeForever { }
+        //assert test
+        assert(Error.DEFAULT_ERROR == usersUseCase.usersLiveData.value?.errorCode)
+    }
+
+    @Test
+    fun testGetUserDetailsSuccessful() {
+        //mock
+        userDetails = testModelsGenerator.generateUserDetailsModel()
+        val fackID = 1
+        val serviceResponse = Resource.Success(userDetails)
+        coEvery { dataRepository?.requestUserDetails(fackID) } returns serviceResponse
+        //call
+        usersUseCase.getUserDetails(fackID)
         usersUseCase.userDetailsLiveData.observeForever { }
         //assert test
         assert(serviceResponse == usersUseCase.userDetailsLiveData.value)
     }
 
     @Test
-    fun testGetNewsFail() {
+    fun testGetUserDetailsFail() {
         //mock
-        val serviceResponse = Resource.DataError<NewsModel>(Error.DEFAULT_ERROR)
-        coEvery { dataRepository?.requestUsers() } returns serviceResponse
+        val serviceResponse = Resource.DataError<UserDetails>(Error.DEFAULT_ERROR)
+        val fackID = 1
+        coEvery { dataRepository?.requestUserDetails(fackID) } returns serviceResponse
         //call
-        usersUseCase.getUserDetails()
-        usersUseCase.userDetailsLiveData.observeForever {  }
+        usersUseCase.getUserDetails(fackID)
+        usersUseCase.userDetailsLiveData.observeForever { }
         //assert test
         assert(Error.DEFAULT_ERROR == usersUseCase.userDetailsLiveData.value?.errorCode)
-    }
-
-    @Test
-    fun searchByTitleSuccess() {
-        newsModel = testModelsGenerator.generateNewsModel()
-        val title = newsModel.newsItems.last().title
-        val serviceResponse = Resource.Success(newsModel)
-        coEvery { dataRepository?.requestUsers() } returns serviceResponse
-        //call
-        usersUseCase.getUserDetails()
-        val newsItem = usersUseCase.searchByTitle(title)
-        assertNotNull(newsItem)
-        assert(newsItem?.title == newsItem?.title)
-    }
-
-    @Test
-    fun searchByTitleFail() {
-        val stup = "&%$##"
-        newsModel = testModelsGenerator.generateNewsModel()
-        val serviceResponse = Resource.Success(newsModel)
-        coEvery { dataRepository?.requestUsers() } returns serviceResponse
-        //call
-        val newsItem = usersUseCase.searchByTitle(stup)
-        assert(newsItem == null)
     }
 
     @AfterEach

@@ -94,16 +94,6 @@ class UsersListActivity : BaseActivity() {
         EspressoIdlingResource.increment()
     }
 
-    private fun showSearchResult(userDetails: UserDetails) {
-        usersListViewModel.openUserDetails(userDetails)
-        pb_loading.toGone()
-    }
-
-    private fun noSearchResult(unit: Unit) {
-        showSearchError()
-        pb_loading.toGone()
-    }
-
     private fun handleUsersList(newsModel: Resource<List<User>>) {
         when (newsModel) {
             is Resource.Loading -> showLoadingView()
@@ -118,19 +108,28 @@ class UsersListActivity : BaseActivity() {
     private fun getUserDetails(userDetails: Resource<UserDetails>) {
         when (userDetails) {
             is Resource.Loading -> {
-                EspressoIdlingResource.increment()
-                pb_loading.toVisible()
+                showLoader(true)
             }
             is Resource.Success -> userDetails.data?.let {
+                showLoader(false)
                 usersListViewModel.openUserDetails(it)
-                pb_loading.toGone()
-                EspressoIdlingResource.decrement()
+
+
             }
             is Resource.DataError -> {
-                pb_loading.toGone()
-                EspressoIdlingResource.decrement()
+                showLoader(false)
                 userDetails.errorCode?.let { usersListViewModel.showToastMessage(it) }
             }
+        }
+    }
+
+    fun showLoader(show:Boolean){
+        if(show){
+            pb_loading.toVisible()
+            EspressoIdlingResource.increment()
+        } else {
+            pb_loading.toGone()
+            EspressoIdlingResource.decrement()
         }
     }
 
