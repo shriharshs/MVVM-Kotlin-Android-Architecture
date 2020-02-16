@@ -68,7 +68,7 @@ class UsersListViewModelTest {
 
         //3-verify
         val isEmptyList = usersListViewModel.usersLiveData.value?.data.isNullOrEmpty()
-        assert(usersModel == usersListViewModel.usersLiveData.value)
+        assert(usersModel == usersListViewModel.usersLiveData.value?.data)
         assert(!isEmptyList)
     }
 
@@ -104,7 +104,7 @@ class UsersListViewModelTest {
 
         //1- Mock calls
         val fackId = 1
-        every { usersUseCase.getUsers() } just Runs
+        every { usersUseCase.getUserDetails(fackId) } just Runs
         every { usersUseCase.userDetailsLiveData } returns userDetailsModelSuccess
 
         //2-Call
