@@ -7,10 +7,9 @@ import com.task.data.remote.dto.UserDetails
 import com.task.ui.ViewModelFactory
 import com.task.ui.base.BaseActivity
 import com.task.utils.Constants
+import com.task.utils.DateUtil.parseDate
 import com.task.utils.observe
 import kotlinx.android.synthetic.main.details_layout.*
-import kotlinx.android.synthetic.main.details_layout.tv_user_name
-import kotlinx.android.synthetic.main.user_list_item.*
 import javax.inject.Inject
 
 /**
@@ -52,12 +51,12 @@ class DetailsActivity : BaseActivity() {
                     .placeholder(R.drawable.github_logo)
                     .error(R.drawable.github_logo)
                     .into(iv_user_avatar)
-            tv_location.text = userDetails.location
-            tv_account_created.text = userDetails.createdAt
-            tv_account_updated.text = userDetails.updatedAt
-            tv_followers.text = userDetails.followers.toString()
-            tv_public_repositories.text = userDetails.publicRepos.toString()
-            tv_public_gists.text = userDetails.publicGists.toString()
         }
+        tv_location.text = userDetails.location
+        userDetails.createdAt?.let { tv_account_created.text = parseDate(it) }
+        userDetails.updatedAt?.let { tv_account_updated.text = parseDate(it) }
+        tv_followers.text = userDetails.followers.toString()
+        tv_public_repositories.text = userDetails.publicRepos.toString()
+        tv_public_gists.text = userDetails.publicGists.toString()
     }
 }

@@ -9,4 +9,10 @@
     <string name="news">News</string>
     <string name="no_internet">Please check your internet connection</string>
     <string name="network_error">Network error, could get data,please try again!</string>
+    <string name="location">Location:</string>
+    <string name="account_created">Account created:</string>
+    <string name="account_updated">Account updated:</string>
+    <string name="followers">Followers:</string>
+    <string name="public_repositories">public repositories :</string>
+    <string name="gists">public gists :</string>
 </resources>
