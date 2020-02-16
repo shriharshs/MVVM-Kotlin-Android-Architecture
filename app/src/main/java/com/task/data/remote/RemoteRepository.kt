@@ -37,7 +37,7 @@ constructor(private val serviceGenerator: ServiceGenerator) : RemoteSource {
         }
     }
 
-    override suspend fun requestUserDetails(userID: String): Resource<UserDetails> {
+    override suspend fun requestUserDetails(userID: Int): Resource<UserDetails> {
         val obj = object : ApiCall {
             override suspend fun requestAPI(): Response<*> {
                 val gitHubService = serviceGenerator.createService(GitHubUsers::class.java)

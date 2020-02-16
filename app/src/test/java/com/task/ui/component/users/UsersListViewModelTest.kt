@@ -4,13 +4,12 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.task.data.Resource
 import com.task.data.error.Error
-import com.task.usecase.UsersUseCase
+import com.task.usecase.userDetaiUseCase.UsersUseCase
 import com.util.InstantExecutorExtension
 import com.util.MainCoroutineRule
 import com.util.TestModelsGenerator
 import io.mockk.Runs
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
@@ -45,7 +44,7 @@ class UsersListViewModelTest {
         // We initialise the repository with no tasks
         newsTitle = testModelsGenerator.getStupSearchTitle()
         val newsModelSuccess = MutableLiveData<Resource<NewsModel>>()
-        every { usersUseCase.usersLiveData } returns newsModelSuccess
+        every { usersUseCase.userDetailsLiveData } returns newsModelSuccess
     }
 
     @Test
@@ -56,14 +55,14 @@ class UsersListViewModelTest {
         newsModelSuccess.value = Resource.Success(newsModeltest)
 
         //1- Mock calls
-        every { usersUseCase.getUsers() } just Runs
-        every { usersUseCase.usersLiveData } returns newsModelSuccess
+        every { usersUseCase.getUserDetails() } just Runs
+        every { usersUseCase.userDetailsLiveData } returns newsModelSuccess
 
         //2-Call
         usersListViewModel = UsersListViewModel(usersUseCase)
-        usersListViewModel.getNews()
+        usersListViewModel.getUsers()
         //active observer for livedata
-        usersUseCase.usersLiveData.observeForever { }
+        usersUseCase.userDetailsLiveData.observeForever { }
 
         //3-verify
         val isEmptyList = usersListViewModel.usersLiveData.value?.data?.newsItems.isNullOrEmpty()
@@ -79,14 +78,14 @@ class UsersListViewModelTest {
         newsModelSuccess.value = Resource.Success(newsModeltest)
 
         //1- Mock calls
-        every { usersUseCase.getUsers() } just Runs
-        every { usersUseCase.usersLiveData } returns newsModelSuccess
+        every { usersUseCase.getUserDetails() } just Runs
+        every { usersUseCase.userDetailsLiveData } returns newsModelSuccess
 
         //2-Call
         usersListViewModel = UsersListViewModel(usersUseCase)
-        usersListViewModel.getNews()
+        usersListViewModel.getUsers()
         //active observer for livedata
-        usersUseCase.usersLiveData.observeForever { }
+        usersUseCase.userDetailsLiveData.observeForever { }
 
         //3-verify
         val isEmptyList = usersListViewModel.usersLiveData.value?.data?.newsItems.isNullOrEmpty()
@@ -101,14 +100,14 @@ class UsersListViewModelTest {
         newsModelFail.value = Resource.DataError(Error.NETWORK_ERROR)
 
         //1- Mock calls
-        every { usersUseCase.getUsers() } just Runs
-        every { usersUseCase.usersLiveData } returns newsModelFail
+        every { usersUseCase.getUserDetails() } just Runs
+        every { usersUseCase.userDetailsLiveData } returns newsModelFail
 
         //2-Call
         usersListViewModel = UsersListViewModel(usersUseCase)
-        usersListViewModel.getNews()
+        usersListViewModel.getUsers()
         //active observer for livedata
-        usersUseCase.usersLiveData.observeForever { }
+        usersUseCase.userDetailsLiveData.observeForever { }
 
         //3-verify
         assert(Error.NETWORK_ERROR == usersListViewModel.usersLiveData.value?.errorCode)

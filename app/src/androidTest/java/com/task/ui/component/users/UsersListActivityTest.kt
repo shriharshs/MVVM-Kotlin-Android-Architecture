@@ -39,9 +39,9 @@ class UsersListActivityTest {
         searchEditText.perform(ViewActions.click())
         searchEditText.perform(ViewActions.typeText(testSearchString), ViewActions.pressImeActionButton())
         Espresso.onView(ViewMatchers.withId(R.id.btn_search)).perform(ViewActions.click())
-        Espresso.onView(ViewMatchers.withId(R.id.tv_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.tv_description)).perform(ViewActions.scrollTo())
-        Espresso.onView(ViewMatchers.withId(R.id.tv_description)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.tv_user_name)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.tv_location)).perform(ViewActions.scrollTo())
+        Espresso.onView(ViewMatchers.withId(R.id.tv_location)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.pressBack()
         searchEditText.check(ViewAssertions.matches(ViewMatchers.withText(testSearchString)))
         Espresso.onView(ViewMatchers.withId(R.id.rv_news_list)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -51,8 +51,8 @@ class UsersListActivityTest {
     fun testScroll() {
         Espresso.onView(ViewMatchers.withId(R.id.rv_news_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, ViewActions.click()))
-        Espresso.onView(ViewMatchers.withId(R.id.tv_title)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.tv_description)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.tv_user_name)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.tv_location)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     @Test

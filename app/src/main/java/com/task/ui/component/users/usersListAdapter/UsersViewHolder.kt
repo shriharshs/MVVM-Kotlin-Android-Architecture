@@ -1,4 +1,4 @@
-package com.task.ui.component.users.newsAdapter
+package com.task.ui.component.users.usersListAdapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +17,15 @@ class UsersViewHolder(override val containerView: View) : RecyclerView.ViewHolde
 
     fun bind(user: User, recyclerItemListener: RecyclerItemListener) {
         tv_user_name.text = user.login
-        user.avatarUrl?.let { Picasso.get().load(it).placeholder(R.drawable.ic_person_black_48dp).error(R.drawable.ic_person_black_48dp).into(iv_user_image) }
+        user.avatarUrl?.let {
+            Picasso.get().load(it)
+                    .resize(480, 480)
+                    .centerInside()
+                    .onlyScaleDown()
+                    .placeholder(R.drawable.ic_person_black_48dp)
+                    .error(R.drawable.ic_person_black_48dp)
+                    .into(iv_user_image)
+        }
         rl_news_item.setOnClickListener { recyclerItemListener.onItemSelected(user) }
     }
 }

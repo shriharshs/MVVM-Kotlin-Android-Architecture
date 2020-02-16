@@ -3,6 +3,7 @@ package com.task.data
 import com.task.data.local.LocalRepository
 import com.task.data.remote.RemoteRepository
 import com.task.data.remote.dto.User
+import com.task.data.remote.dto.UserDetails
 import javax.inject.Inject
 
 
@@ -15,5 +16,9 @@ constructor(private val remoteRepository: RemoteRepository, private val localRep
 
     override suspend fun requestUsers(): Resource<List<User>> {
         return remoteRepository.requestUsers()
+    }
+
+    override suspend fun requestUserDetails(id:Int): Resource<UserDetails> {
+        return remoteRepository.requestUserDetails(id)
     }
 }

@@ -11,12 +11,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.task.R
 import com.task.data.Resource
 import com.task.data.remote.dto.User
+import com.task.data.remote.dto.UserDetails
 import com.task.ui.ViewModelFactory
 import com.task.ui.base.BaseActivity
 import com.task.ui.component.details.DetailsActivity
-import com.task.ui.component.users.newsAdapter.UsersAdapter
+import com.task.ui.component.users.usersListAdapter.UsersAdapter
 import com.task.utils.*
-import kotlinx.android.synthetic.main.home_activity.*
+import kotlinx.android.synthetic.main.users_activity.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.intentFor
 import javax.inject.Inject
@@ -32,7 +33,7 @@ class UsersListActivity : BaseActivity() {
     lateinit var viewModelFactory: ViewModelFactory
 
     override val layoutId: Int
-        get() = R.layout.home_activity
+        get() = R.layout.users_activity
 
     val countingIdlingResource: IdlingResource
         @VisibleForTesting
@@ -45,7 +46,7 @@ class UsersListActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ic_toolbar_refresh.setOnClickListener {
-            usersListViewModel.getNews()
+            usersListViewModel.getUsers()
         }
         btn_search.setOnClickListener {
             if (!(et_search.text?.toString().isNullOrEmpty())) {
@@ -56,7 +57,7 @@ class UsersListActivity : BaseActivity() {
         val layoutManager = LinearLayoutManager(this)
         rv_news_list.layoutManager = layoutManager
         rv_news_list.setHasFixedSize(true)
-        usersListViewModel.getNews()
+        usersListViewModel.getUsers()
     }
 
     private fun bindListData(users: List<User>) {
@@ -70,7 +71,7 @@ class UsersListActivity : BaseActivity() {
         EspressoIdlingResource.decrement()
     }
 
-    private fun navigateToDetailsScreen(navigateEvent: Event<User>) {
+    private fun navigateToDetailsScreen(navigateEvent: Event<UserDetails>) {
         navigateEvent.getContentIfNotHandled()?.let {
             startActivity(intentFor<DetailsActivity>(Constants.USER_KEY to it))
         }
@@ -102,8 +103,8 @@ class UsersListActivity : BaseActivity() {
     }
 
 
-    private fun showSearchResult(newsItem: User) {
-        usersListViewModel.openUserDetails(newsItem)
+    private fun showSearchResult(userDetails: UserDetails) {
+        usersListViewModel.openUserDetails(userDetails)
         pb_loading.toGone()
     }
 
@@ -112,7 +113,7 @@ class UsersListActivity : BaseActivity() {
         pb_loading.toGone()
     }
 
-    private fun handleNewsList(newsModel: Resource<List<User>>) {
+    private fun handleUsersList(newsModel: Resource<List<User>>) {
         when (newsModel) {
             is Resource.Loading -> showLoadingView()
             is Resource.Success -> newsModel.data?.let { bindListData(users = it) }
@@ -121,12 +122,25 @@ class UsersListActivity : BaseActivity() {
                 newsModel.errorCode?.let { usersListViewModel.showToastMessage(it) }
             }
         }
+    }
 
+    private fun getUserDetails(userDetails: Resource<UserDetails>) {
+        when (userDetails) {
+            is Resource.Loading -> showLoadingView()
+            is Resource.Success -> userDetails.data?.let {
+                usersListViewModel.openUserDetails(it)
+                pb_loading.toGone() }
+            is Resource.DataError -> {
+                showDataView(false)
+                userDetails.errorCode?.let { usersListViewModel.showToastMessage(it) }
+            }
+        }
     }
 
     override fun observeViewModel() {
-        observe(usersListViewModel.usersLiveData, ::handleNewsList)
-        observeEvent(usersListViewModel.openNewsDetails, ::navigateToDetailsScreen)
+        observe(usersListViewModel.usersLiveData, ::handleUsersList)
+        observe(usersListViewModel.userDetailsLiveData, ::getUserDetails)
+        observeEvent(usersListViewModel.openUserDetails, ::navigateToDetailsScreen)
         observeSnackBarMessages(usersListViewModel.showSnackBar)
         observeToast(usersListViewModel.showToast)
 

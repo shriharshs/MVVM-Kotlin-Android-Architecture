@@ -6,9 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import com.task.data.Resource
 import com.task.data.error.mapper.ErrorMapper
 import com.task.data.remote.dto.User
+import com.task.data.remote.dto.UserDetails
 import com.task.ui.base.BaseViewModel
-import com.task.usecase.UsersUseCase
 import com.task.usecase.errors.ErrorManager
+import com.task.usecase.usersUseCase.UsersUseCase
 import com.task.utils.Event
 import javax.inject.Inject
 
@@ -26,12 +27,13 @@ constructor(private val usersDataUseCase: UsersUseCase) : BaseViewModel() {
      * Data --> LiveData, Exposed as LiveData, Locally in viewModel as MutableLiveData
      */
     var usersLiveData: MutableLiveData<Resource<List<User>>> = usersDataUseCase.usersLiveData
+    var userDetailsLiveData: MutableLiveData<Resource<UserDetails>> = usersDataUseCase.userDetailsLiveData
 
     /**
      * UI actions as event, user action is single one time event, Shouldn't be multiple time consumption
      */
-    private val openUserDetailsPrivate = MutableLiveData<Event<User>>()
-    val openNewsDetails: LiveData<Event<User>> get() = openUserDetailsPrivate
+    private val openUserDetailsPrivate = MutableLiveData<Event<UserDetails>>()
+    val openUserDetails: LiveData<Event<UserDetails>> get() = openUserDetailsPrivate
 
     /**
      * Error handling as UI
@@ -43,11 +45,11 @@ constructor(private val usersDataUseCase: UsersUseCase) : BaseViewModel() {
     val showToast: LiveData<Event<Any>> get() = showToastPrivate
 
 
-    fun getNews() {
+    fun getUsers() {
         usersDataUseCase.getUsers()
     }
 
-    fun openUserDetails(user: User) {
+    fun openUserDetails(user: UserDetails) {
         openUserDetailsPrivate.value = Event(user)
     }
 
@@ -60,16 +62,10 @@ constructor(private val usersDataUseCase: UsersUseCase) : BaseViewModel() {
         showToastPrivate.value = Event(error.description)
     }
 
+    fun getUserDetails(id: Int) {
+        usersDataUseCase.getUserDetails(id)
+    }
+
     fun onSearchClick(newsTitle: String) {
-//        if (newsTitle.isNotEmpty()) {
-//            val newsItem = usersDataUseCase.searchByTitle(newsTitle)
-//            if (newsItem != null) {
-//                newsSearchFoundPrivate.value = newsItem
-//            } else {
-//                noSearchFoundPrivate.postValue(Unit)
-//            }
-//        } else {
-//            noSearchFoundPrivate.postValue(Unit)
-//        }
     }
 }

@@ -1,4 +1,4 @@
-package com.task.ui.component.users.newsAdapter
+package com.task.ui.component.users.usersListAdapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -16,7 +16,7 @@ class UsersAdapter(private val usersListViewModel: UsersListViewModel, private v
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(user: User) {
-            usersListViewModel.openUserDetails(user)
+            usersListViewModel.getUserDetails(user.id)
         }
     }
 

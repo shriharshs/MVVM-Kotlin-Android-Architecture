@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tv_user_name"
             style="@style/Title_Style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,25 +21,71 @@
             android:textSize="24sp"
             android:typeface="monospace"
             android:textStyle="bold"
-            tools:text="@string/news_title_preview"/>
+            tools:text="@string/user_name_preview"/>
 
         <ImageView
-            android:id="@+id/iv_news_main_Image"
+            android:id="@+id/iv_user_avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/default_margin"
             android:layout_marginTop="@dimen/default_margin"
             android:layout_gravity="center"
             android:contentDescription="@null"
-            android:src="@drawable/news"/>
+            android:src="@drawable/github_logo"/>
 
         <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_location_on_black_24dp"
+            android:layout_margin="@dimen/default_margin"
+            android:textSize="16sp"
+            android:maxLines="1"
+            tools:text="@string/location_preview"/>
+
+        <TextView
+            android:id="@+id/tv_account_created"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin"
             android:textSize="16sp"
-            tools:text="@string/news_details_preview"/>
+            android:maxLines="1"
+            tools:text="Account created: 22/12/2007"/>
+        <TextView
+            android:id="@+id/tv_account_updated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:textSize="16sp"
+            android:maxLines="1"
+            tools:text="Account updated: 22/12/2007"/>
+
+        <TextView
+            android:id="@+id/tv_followers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:textSize="16sp"
+            android:maxLines="1"
+            tools:text="Followers: 21"/>
+
+        <TextView
+            android:id="@+id/tv_public_repositories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:textSize="16sp"
+            android:maxLines="1"
+            tools:text="public repositories : 133"/>
+
+        <TextView
+            android:id="@+id/tv_public_gists"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:textSize="16sp"
+            android:maxLines="1"
+            tools:text="public gists : 6"/>
     </LinearLayout>
 
 </ScrollView>

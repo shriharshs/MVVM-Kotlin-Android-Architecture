@@ -1,16 +1,18 @@
 package com.task.data.remote.dto
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-
+@Parcelize
 data class UserDetails(
     @SerializedName("avatar_url")
     var avatarUrl: String = "",
-    var bio: Any = Any(),
+    var bio: String = "",
     var blog: String = "",
-    var company: Any = Any(),
+    var company: String = "",
     @SerializedName("created_at")
     var createdAt: String = "",
-    var email: Any = Any(),
+    var email: String = "",
     @SerializedName("events_url")
     var eventsUrl: String = "",
     var followers: Int = 0,
@@ -23,7 +25,7 @@ data class UserDetails(
     var gistsUrl: String = "",
     @SerializedName("gravatar_id")
     var gravatarId: String = "",
-    var hireable: Any = Any(),
+    var hireable: String = "",
     @SerializedName("html_url")
     var htmlUrl: String = "",
     var id: Int = 0,
@@ -52,4 +54,4 @@ data class UserDetails(
     @SerializedName("updated_at")
     var updatedAt: String = "",
     var url: String = ""
-)
+):Parcelable

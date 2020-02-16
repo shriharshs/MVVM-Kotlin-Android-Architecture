@@ -10,5 +10,5 @@ import com.task.data.remote.dto.UserDetails
 
 internal interface RemoteSource {
     suspend fun requestUsers(): Resource<List<User>>
-    suspend fun requestUserDetails(userID: String): Resource<UserDetails>
+    suspend fun requestUserDetails(userID: Int): Resource<UserDetails>
 }

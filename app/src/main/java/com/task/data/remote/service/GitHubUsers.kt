@@ -15,5 +15,5 @@ interface GitHubUsers {
     suspend fun fetchUsers(): Response<List<User>>
 
     @GET("users/{userId}")
-    suspend fun fetchUserDetails(@Path("userId") userId: String): Response<UserDetails>
+    suspend fun fetchUserDetails(@Path("userId") userId: Int): Response<UserDetails>
 }

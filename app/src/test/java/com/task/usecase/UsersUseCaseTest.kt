@@ -4,6 +4,7 @@ package com.task.usecase
 import com.task.data.DataRepository
 import com.task.data.Resource
 import com.task.data.error.Error
+import com.task.usecase.userDetaiUseCase.UsersUseCase
 import com.util.InstantExecutorExtension
 import com.util.MainCoroutineRule
 import com.util.TestModelsGenerator
@@ -48,10 +49,10 @@ class UsersUseCaseTest {
         val serviceResponse = Resource.Success(newsModel)
         coEvery { dataRepository?.requestUsers() } returns serviceResponse
         //call
-        usersUseCase.getUsers()
-        usersUseCase.usersLiveData.observeForever { }
+        usersUseCase.getUserDetails()
+        usersUseCase.userDetailsLiveData.observeForever { }
         //assert test
-        assert(serviceResponse == usersUseCase.usersLiveData.value)
+        assert(serviceResponse == usersUseCase.userDetailsLiveData.value)
     }
 
     @Test
@@ -60,10 +61,10 @@ class UsersUseCaseTest {
         val serviceResponse = Resource.DataError<NewsModel>(Error.DEFAULT_ERROR)
         coEvery { dataRepository?.requestUsers() } returns serviceResponse
         //call
-        usersUseCase.getUsers()
-        usersUseCase.usersLiveData.observeForever {  }
+        usersUseCase.getUserDetails()
+        usersUseCase.userDetailsLiveData.observeForever {  }
         //assert test
-        assert(Error.DEFAULT_ERROR == usersUseCase.usersLiveData.value?.errorCode)
+        assert(Error.DEFAULT_ERROR == usersUseCase.userDetailsLiveData.value?.errorCode)
     }
 
     @Test
@@ -73,7 +74,7 @@ class UsersUseCaseTest {
         val serviceResponse = Resource.Success(newsModel)
         coEvery { dataRepository?.requestUsers() } returns serviceResponse
         //call
-        usersUseCase.getUsers()
+        usersUseCase.getUserDetails()
         val newsItem = usersUseCase.searchByTitle(title)
         assertNotNull(newsItem)
         assert(newsItem?.title == newsItem?.title)

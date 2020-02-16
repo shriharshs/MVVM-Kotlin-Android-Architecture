@@ -3,6 +3,7 @@ package com.task.ui.component.details
 import androidx.lifecycle.MutableLiveData
 import com.task.data.error.mapper.ErrorMapper
 import com.task.data.remote.dto.User
+import com.task.data.remote.dto.UserDetails
 import com.task.ui.base.BaseViewModel
 import com.task.usecase.errors.ErrorManager
 import javax.inject.Inject
@@ -13,7 +14,7 @@ import javax.inject.Inject
 
 class DetailsViewModel @Inject
 constructor() : BaseViewModel() {
-    var newsItem: MutableLiveData<User> = MutableLiveData()
+    var userDetails: MutableLiveData<UserDetails> = MutableLiveData()
     override val errorManager: ErrorManager
         get() = ErrorManager(ErrorMapper())
 }
