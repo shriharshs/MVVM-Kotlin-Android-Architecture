@@ -1,5 +1,6 @@
 package com.task.ui.base
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View.GONE
@@ -10,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.task.R
 import com.task.ui.base.listeners.ActionBarView
 import com.task.ui.base.listeners.BaseView
+import com.task.ui.base.listeners.MainActionActionBar
+import com.task.utils.ResourcesUtil
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.toolbar.*
 
@@ -55,18 +58,29 @@ abstract class BaseActivity : AppCompatActivity(), BaseView, ActionBarView {
         }
     }
 
-    override fun setSettingsIconVisibility(visibility: Boolean) {
+    override fun setMainAction(mainAction: MainActionActionBar) {
         val actionBar = supportActionBar
         if (actionBar != null) {
-            val icon = findViewById<ImageView>(R.id.ic_toolbar_setting)
-            icon?.visibility = if (visibility) VISIBLE else GONE
+            val icon = findViewById<ImageView>(R.id.ic_toolbar_main_action)
+            var iconDrawable: Drawable = ResourcesUtil.getDrawable(R.drawable.ic_arrow_back_white_24dp)
+            when (mainAction) {
+                MainActionActionBar.BACK -> {
+                    iconDrawable = ResourcesUtil.getDrawable(R.drawable.ic_arrow_back_white_24dp)
+                    icon.setOnClickListener { onBackClicked() }
+                }
+                MainActionActionBar.REFRESH -> {
+                    iconDrawable = ResourcesUtil.getDrawable(R.drawable.ic_sync_white_24dp)
+                    icon.setOnClickListener { onRefreshed() }
+                }
+            }
+            icon.setImageDrawable(iconDrawable)
         }
     }
 
-    override fun setRefreshVisibility(visibility: Boolean) {
+    override fun showMainAction(visibility: Boolean) {
         val actionBar = supportActionBar
         if (actionBar != null) {
-            val icon = findViewById<ImageView>(R.id.ic_toolbar_refresh)
+            val icon = findViewById<ImageView>(R.id.ic_toolbar_main_action)
             icon?.visibility = if (visibility) VISIBLE else GONE
         }
     }
@@ -76,6 +90,14 @@ abstract class BaseActivity : AppCompatActivity(), BaseView, ActionBarView {
             android.R.id.home -> finish()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    open fun onRefreshed() {
+
+    }
+
+    fun onBackClicked() {
+        this.finish()
     }
 
     abstract fun observeViewModel()

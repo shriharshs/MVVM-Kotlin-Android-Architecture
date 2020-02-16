@@ -6,6 +6,7 @@ import com.task.R
 import com.task.data.remote.dto.UserDetails
 import com.task.ui.ViewModelFactory
 import com.task.ui.base.BaseActivity
+import com.task.ui.base.listeners.MainActionActionBar
 import com.task.utils.Constants
 import com.task.utils.DateUtil.parseDate
 import com.task.utils.observe
@@ -30,6 +31,7 @@ class DetailsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setMainAction(MainActionActionBar.BACK)
         viewModel.userDetails.value = intent.getParcelableExtra(Constants.USER_KEY)
     }
 

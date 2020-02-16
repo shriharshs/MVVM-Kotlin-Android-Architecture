@@ -14,11 +14,11 @@ import com.task.data.remote.dto.User
 import com.task.data.remote.dto.UserDetails
 import com.task.ui.ViewModelFactory
 import com.task.ui.base.BaseActivity
+import com.task.ui.base.listeners.MainActionActionBar
 import com.task.ui.component.details.DetailsActivity
 import com.task.ui.component.users.usersListAdapter.UsersAdapter
 import com.task.utils.*
 import kotlinx.android.synthetic.main.users_activity.*
-import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.intentFor
 import javax.inject.Inject
 
@@ -45,25 +45,17 @@ class UsersListActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ic_toolbar_refresh.setOnClickListener {
-            usersListViewModel.getUsers()
-        }
-        btn_search.setOnClickListener {
-            if (!(et_search.text?.toString().isNullOrEmpty())) {
-                pb_loading.visibility = VISIBLE
-                usersListViewModel.onSearchClick(et_search.text?.toString()!!)
-            }
-        }
+        setMainAction(MainActionActionBar.REFRESH)
         val layoutManager = LinearLayoutManager(this)
-        rv_news_list.layoutManager = layoutManager
-        rv_news_list.setHasFixedSize(true)
+        rv_users_list.layoutManager = layoutManager
+        rv_users_list.setHasFixedSize(true)
         usersListViewModel.getUsers()
     }
 
     private fun bindListData(users: List<User>) {
         if (!(users.isNullOrEmpty())) {
             val newsAdapter = UsersAdapter(usersListViewModel, users)
-            rv_news_list.adapter = newsAdapter
+            rv_users_list.adapter = newsAdapter
             showDataView(true)
         } else {
             showDataView(false)
@@ -78,11 +70,11 @@ class UsersListActivity : BaseActivity() {
     }
 
     private fun observeSnackBarMessages(event: LiveData<Event<Int>>) {
-        rl_users_list.setupSnackbar(this, event, Snackbar.LENGTH_LONG)
+        root.setupSnackbar(this, event, Snackbar.LENGTH_LONG)
     }
 
     private fun observeToast(event: LiveData<Event<Any>>) {
-        rl_users_list.showToast(this, event, Snackbar.LENGTH_LONG)
+        root.showToast(this, event, Snackbar.LENGTH_LONG)
     }
 
     private fun showSearchError() {
@@ -91,17 +83,16 @@ class UsersListActivity : BaseActivity() {
 
     private fun showDataView(show: Boolean) {
         tv_no_data.visibility = if (show) GONE else VISIBLE
-        rl_users_list.visibility = if (show) VISIBLE else GONE
+        rv_users_list.visibility = if (show) VISIBLE else GONE
         pb_loading.toGone()
     }
 
     private fun showLoadingView() {
         pb_loading.toVisible()
         tv_no_data.toGone()
-        rl_users_list.toGone()
+        rv_users_list.toGone()
         EspressoIdlingResource.increment()
     }
-
 
     private fun showSearchResult(userDetails: UserDetails) {
         usersListViewModel.openUserDetails(userDetails)
@@ -126,12 +117,18 @@ class UsersListActivity : BaseActivity() {
 
     private fun getUserDetails(userDetails: Resource<UserDetails>) {
         when (userDetails) {
-            is Resource.Loading -> showLoadingView()
+            is Resource.Loading -> {
+                EspressoIdlingResource.increment()
+                pb_loading.toVisible()
+            }
             is Resource.Success -> userDetails.data?.let {
                 usersListViewModel.openUserDetails(it)
-                pb_loading.toGone() }
+                pb_loading.toGone()
+                EspressoIdlingResource.decrement()
+            }
             is Resource.DataError -> {
-                showDataView(false)
+                pb_loading.toGone()
+                EspressoIdlingResource.decrement()
                 userDetails.errorCode?.let { usersListViewModel.showToastMessage(it) }
             }
         }
@@ -144,5 +141,9 @@ class UsersListActivity : BaseActivity() {
         observeSnackBarMessages(usersListViewModel.showSnackBar)
         observeToast(usersListViewModel.showToast)
 
+    }
+
+    override fun onRefreshed() {
+        usersListViewModel.getUsers()
     }
 }

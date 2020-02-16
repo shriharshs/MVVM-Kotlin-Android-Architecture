@@ -10,7 +10,7 @@ interface ActionBarView {
 
     fun setTitle(titleKey: String)
 
-    fun setSettingsIconVisibility(visibility: Boolean)
+    fun setMainAction(mainAction: MainActionActionBar)
 
-    fun setRefreshVisibility(visibility: Boolean)
+    fun showMainAction(visibility: Boolean)
 }

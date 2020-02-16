@@ -44,12 +44,12 @@ class UsersListActivityTest {
         Espresso.onView(ViewMatchers.withId(R.id.tv_location)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.pressBack()
         searchEditText.check(ViewAssertions.matches(ViewMatchers.withText(testSearchString)))
-        Espresso.onView(ViewMatchers.withId(R.id.rv_news_list)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.rv_users_list)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
     @Test
     fun testScroll() {
-        Espresso.onView(ViewMatchers.withId(R.id.rv_news_list))
+        Espresso.onView(ViewMatchers.withId(R.id.rv_users_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, ViewActions.click()))
         Espresso.onView(ViewMatchers.withId(R.id.tv_user_name)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.tv_location)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -57,18 +57,18 @@ class UsersListActivityTest {
 
     @Test
     fun testRefresh() { //Before refresh there is a list .
-        Espresso.onView(ViewMatchers.withId(R.id.rv_news_list)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.rv_users_list)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.pb_loading)).check(ViewAssertions.matches(Matchers.not(ViewMatchers.isDisplayed())))
         // do refresh .
-        Espresso.onView(ViewMatchers.withId(R.id.ic_toolbar_refresh)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.ic_toolbar_main_action)).perform(ViewActions.click())
         //after refresh there is a list.
-        Espresso.onView(ViewMatchers.withId(R.id.rv_news_list)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.rv_users_list)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.pb_loading)).check(ViewAssertions.matches(Matchers.not(ViewMatchers.isDisplayed())))
     }
 
     @Test
     fun displayNewsData() {
-        Espresso.onView(ViewMatchers.withId(R.id.rv_news_list)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.rv_users_list)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.pb_loading)).check(ViewAssertions.matches(Matchers.not(ViewMatchers.isDisplayed())))
     }
 
