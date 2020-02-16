@@ -15,4 +15,5 @@
     <string name="followers">Followers:</string>
     <string name="public_repositories">public repositories :</string>
     <string name="gists">public gists :</string>
+    <string name="github_client">Github client</string>
 </resources>
